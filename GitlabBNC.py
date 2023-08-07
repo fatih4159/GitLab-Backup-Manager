@@ -12,7 +12,7 @@ import re
 
 # Writes log to a file
 def log2file(text2log):
-    log2file(text2log)
+    print(text2log)
     # Create a log file if not already available
     log_file = "/tmp/gitlab-bnc-logs/gitlab-backup-" + datetime.datetime.today().strftime("%F") + ".log"
     if not os.path.exists(log_file):
@@ -27,18 +27,16 @@ def remove_old_files(backup_directory, max_keep_days):
     today = datetime.datetime.today()
     thirty_days_ago = today - datetime.timedelta(days=int(max_keep_days))
 
-    old_files = []
+    
     for file in os.listdir(backup_directory):
         if file.endswith(".tar.gz"):
             file_path = os.path.join(backup_directory, file)
             file_date = datetime.date.fromtimestamp(os.path.getmtime(file_path))
 
             if file_date < thirty_days_ago:
-                old_files.append(file)
-
-    for file in old_files:
-        if os.path.exists(file_path):
-            os.remove(file_path)
+                if os.path.exists(file_path):
+                    os.remove(file_path)
+                    
             
 def extract_date(filename):
     # Extract the date portion of the filename using regular expression
